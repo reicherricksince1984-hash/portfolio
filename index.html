@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RIKI'S CODE Portfolio</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <main class="desktop">
+    <div class="desktop-icon" id="editorIcon" role="button" tabindex="0" aria-label="RIKI'S CODE を開く">
+      <div class="icon-box"></div>
+      <div class="icon-label">RIKI'S CODE</div>
+    </div>
+
+    <section class="window" id="editorWindow" aria-hidden="true">
+      <div class="titlebar">
+        <div class="traffic-lights">
+          <span class="light red" id="closeBtn"></span>
+          <span class="light yellow"></span>
+          <span class="light green"></span>
+        </div>
+        <div class="titlebar-title">Welcome to RIKI'S CODE</div>
+        <div style="width: 52px;"></div>
+      </div>
+
+      <div class="window-body">
+        <aside class="activity-bar">
+          <div class="activity-icon" title="About" id="aboutIcon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 12c2.7 0 4.8-2.2 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8V22h19.2v-2.8c0-3.2-6.4-4.8-9.6-4.8z"/>
+            </svg>
+          </div>
+
+          <div class="activity-icon" title="Skills" id="skillsIcon">
+            <svg viewBox="0 0 24 24">
+              <path d="M19.14 12.94a7.49 7.49 0 000-1.88l2.03-1.58a.5.5 0 00.12-.64l-1.92-3.32a.5.5 0 00-.6-.22l-2.39.96a7.28 7.28 0 00-1.63-.94l-.36-2.54A.5.5 0 0014.89 2h-3.78a.5.5 0 00-.49.42l-.36 2.54c-.58.23-1.12.54-1.63.94l-2.39-.96a.5.5 0 00-.6.22L3.72 8.48a.5.5 0 00.12.64l2.03 1.58a7.49 7.49 0 000 1.88l-2.03 1.58a.5.5 0 00-.12.64l1.92 3.32c.13.22.39.31.6.22l2.39-.96c.5.39 1.05.71 1.63.94l.36 2.54c.05.24.25.42.49.42h3.78c.24 0 .44-.18.49-.42l.36-2.54c.58-.23 1.12-.54 1.63-.94l2.39.96c.22.09.47 0 .6-.22l1.92-3.32a.5.5 0 00-.12-.64l-2.03-1.58zM12 15.6A3.6 3.6 0 1112 8.4a3.6 3.6 0 010 7.2z"/>
+            </svg>
+          </div>
+
+          <div class="activity-icon" title="Works" id="worksIcon">
+            <svg viewBox="0 0 24 24">
+              <path d="M3 5h18v14H3zM5 7v10h14V7z"/>
+            </svg>
+          </div>
+
+          <div class="activity-icon" title="Contact" id="contactIcon">
+            <svg viewBox="0 0 24 24">
+              <path d="M2 4h20v16H2zM4 6v.01L12 13l8-6.99V6H4zm16 12V8l-8 7-8-7v10h16z"/>
+            </svg>
+          </div>
+        </aside>
+
+        <aside class="sidebar">
+          <div class="sidebar-title">EXPLORER</div>
+          <ul class="file-tree">
+            <li id="homeFile">index.html</li>
+            <li id="aboutFile" class="active">about_me.js</li>
+            <li id="skillsFile">skills.php</li>
+            <li id="worksFile">works.css</li>
+            <li id="contactFile">contact.py</li>
+          </ul>
+        </aside>
+
+        <div class="editor-area">
+          <div class="tab-bar" id="tabBar"></div>
+
+          <div class="code-view" id="codeView"></div>
+
+          <div id="templates" style="display:none;">
+            <div id="aboutTemplate">
+              <div class="code-line"><span class="comment">// Welcome to RIKI'S CODE</span></div>
+              <div class="code-line"><span class="keyword">const</span> <span class="var">about_me</span> = {</div>
+              <div class="code-line">  name: <span class="string">"Riki Nakamura"</span>,</div>
+              <div class="code-line">  birthplace: <span class="string">"Fukuoka"</span>,</div>
+              <div class="code-line">};</div>
+              <br>
+              <div class="code-line"><span class="comment">// Career History</span></div>
+              <div class="code-line"><span class="keyword">const</span> <span class="var">career</span> = [</div>
+              <div class="code-line">  {</div>
+              <div class="code-line">    year: <span class="string">"2005/04-2018/1"</span>,</div>
+              <div class="code-line">    company: <span class="string">"株式会社ベルシステム24"</span>,</div>
+              <div class="code-line">    post: <span class="string">"operator->LD->SV"</span>,</div>
+              <div class="code-line">    business content: <span class="string">"ISPでのテクニカルサポート"</span></div>
+              <div class="code-line">  },</div>
+
+              <div class="code-line">  {</div>
+              <div class="code-line">    year: <span class="string">"2018/04-2022/10"</span>,</div>
+              <div class="code-line">    company: <span class="string">"株式会社ミリオネット"</span>,</div>
+              <div class="code-line">    post: <span class="string">"主任"</span>,</div>
+              <div class="code-line">    business content: <span class="string">"POSレジの自社開発/海外オフショア開発拠点の立ち上げおよび組織マネジメント"</span></div>
+              <div class="code-line">  },</div>
+
+              <div class="code-line">  {</div>
+              <div class="code-line">    year: <span class="string">"2022/11-2024/05"</span>,</div>
+              <div class="code-line">    company: <span class="string">"株式会社エンジンゴテン"</span>,</div>
+              <div class="code-line">    post: <span class="string">"SES"</span>,</div>
+              <div class="code-line">    business content: <span class="string">"医療機関向けアプリの開発/自社スタッフの教育"</span></div>
+              <div class="code-line">  },</div>
+
+              <div class="code-line">  {</div>
+              <div class="code-line">    year: <span class="string">"2025/01-2025/09"</span>,</div>
+              <div class="code-line">    company: <span class="string">"合同会社ライブビジネス"</span>,</div>
+              <div class="code-line">    post: <span class="string">"IT講師"</span>,</div>
+              <div class="code-line">    business content: <span class="string">"職業訓練校で、HTML、CSS、JavaScript、PHPの講師"</span></div>
+              <div class="code-line">  },</div>
+
+              <div class="code-line">  {</div>
+              <div class="code-line">    year: <span class="string">"2025/11-"</span>,</div>
+              <div class="code-line">    company: <span class="string">"学校法人石川学園"</span>,</div>
+              <div class="code-line">    post: <span class="string">"簿記講師"</span>,</div>
+              <div class="code-line">    business content: <span class="string">"専門学校で、留学生に向けた簿記の講師"</span></div>
+              <div class="code-line">  }</div>
+
+              <div class="code-line">];</div>
+            </div>
+
+            <div id="skillsTemplate">
+
+              <div class="code-line"><span class="comment">// Skills</span></div>
+              <div class="code-line"><span class="keyword">$skills</span> = [</div>
+
+              <div class="code-line">  <span class="string">"HTML"</span> => [</div>
+              <div class="code-line">    <span class="string">"level"</span> => <span class="string">"★★★★★"</span>,</div>
+              <div class="code-line">    <span class="string">"experience"</span> => <span class="string">"8 years"</span></div>
+              <div class="code-line">  ],</div>
+
+              <div class="code-line">  <span class="string">"CSS"</span> => [</div>
+              <div class="code-line">    <span class="string">"level"</span> => <span class="string">"★★★★☆"</span>,</div>
+              <div class="code-line">    <span class="string">"experience"</span> => <span class="string">"8 years"</span></div>
+              <div class="code-line">  ],</div>
+
+              <div class="code-line">  <span class="string">"JavaScript"</span> => [</div>
+              <div class="code-line">    <span class="string">"level"</span> => <span class="string">"★★★★☆"</span>,</div>
+              <div class="code-line">    <span class="string">"experience"</span> => <span class="string">"8 years"</span></div>
+              <div class="code-line">  ],</div>
+
+              <div class="code-line">  <span class="string">"PHP"</span> => [</div>
+              <div class="code-line">    <span class="string">"level"</span> => <span class="string">"★★★★☆"</span>,</div>
+              <div class="code-line">    <span class="string">"experience"</span> => <span class="string">"7 years"</span></div>
+              <div class="code-line">  ],</div>
+
+              <div class="code-line">  <span class="string">"Python"</span> => [</div>
+              <div class="code-line">    <span class="string">"level"</span> => <span class="string">"★★☆☆☆"</span>,</div>
+              <div class="code-line">    <span class="string">"experience"</span> => <span class="string">"1 years 5 month"</span></div>
+              <div class="code-line">  ],</div>
+
+              <div class="code-line">];</div>
+
+            </div>
+            
+            <div id="worksTemplate">
+
+              <div class="code-line"><span class="comment">/* Works */</span></div>
+              <div class="code-line"><span class="keyword">.portfolio</span> {</div>
+
+              <div class="code-line">  <span class="var">project</span>: <span class="string">"ポートフォリオ"</span>;</div>
+              <div class="code-line">  <span class="var">tech</span>: <span class="string">"HTML / CSS / JavaScript"</span>;</div>
+              <div class="code-line">  <span class="var">function</span>: <span class="string">"VSCode風ポートフォリオサイト"</span>;</div>
+
+              <div class="code-line">}</div>
+
+              <br>
+
+              <div class="code-line"><span class="keyword">.LUMINA</span> {</div>
+
+              <div class="code-line">  <span class="var">project</span>: <span class="string">"簿記教案"</span>;</div>
+              <div class="code-line">  <span class="var">tech</span>: <span class="string">"HTML / CSS / JavaScript / GAS"</span>;</div>
+              <div class="code-line">  <span class="var">function</span>: <span class="string">"全経簿記2・3・4級合格に向けたシステム / 成績進捗管理 / 教案"</span>;</div>
+
+              <div class="code-line">}</div>
+
+              <br>
+
+              <div class="code-line"><span class="keyword">.Chu-Bow</span> {</div>
+
+              <div class="code-line">  <span class="var">project</span>: <span class="string">"飲食店向けシステム"</span>;</div>
+              <div class="code-line">  <span class="var">tech</span>: <span class="string">"HTML / CSS / JavaScript / PHP"</span>;</div>
+              <div class="code-line">  <span class="var">function</span>: <span class="string">"飲食店向けバックヤード管理システム / 勤怠管理 / 配置管理 / 給料計算 / 売上管理 / 在庫管理 / 注文管理"</span>;</div>
+
+              <div class="code-line">}</div>
+
+              <br>
+
+            </div>
+
+            <div id="contactTemplate">
+
+              <div class="code-line"><span class="comment"># Contact</span></div>
+              <div class="code-line"><span class="var">contact</span> = {</div>
+
+              <div class="code-line">  <span class="string">"email"</span>: <span class="string">"riki.work.for.business@gmail.com"</span>,</div>
+
+              <div class="code-line">}</div>
+
+              </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="status-bar">
+        <span>PORTFOLIO READY</span>
+        <span>2026 Riki Nakamura</span>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
