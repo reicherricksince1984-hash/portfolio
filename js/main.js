@@ -16,7 +16,7 @@ const contactIcon = document.getElementById("contactIcon");
 const tabBar = document.getElementById("tabBar");
 const codeView = document.getElementById("codeView");
 
-const fileItems = [aboutFile, skillsFile, worksFile, contactFile];
+const fileItems = [homeFile, aboutFile, skillsFile, worksFile, contactFile];
 const activityIcons = [aboutIcon, skillsIcon, worksIcon, contactIcon];
 
 let typingToken = 0;
@@ -25,6 +25,13 @@ const openTabs = new Map();
 let activeTabId = null;
 
 const files = {
+  index: {
+    id: "index",
+    fileName: "index.html",
+    templateId: "indexTemplate",
+    fileEl: homeFile,
+    iconEl: null
+  },
   about: {
     id: "about",
     fileName: "about_me.js",
@@ -114,8 +121,13 @@ function setActiveVisual(file) {
   clearActiveIcon();
   clearActiveTab();
 
-  file.fileEl.classList.add("active");
-  file.iconEl.classList.add("active");
+  if (file.fileEl) {
+    file.fileEl.classList.add("active");
+  }
+
+  if (file.iconEl) {
+    file.iconEl.classList.add("active");
+  }
 
   const tab = openTabs.get(file.id);
   if (tab) {
@@ -202,6 +214,12 @@ function renderFile(fileId) {
 
   openEditor();
 
+  // index.html は常に即表示
+  if (fileId === "index") {
+    renderInstant(template, file);
+    return;
+  }
+
   if (renderedOnce.has(file.templateId)) {
     renderInstant(template, file);
   } else {
@@ -210,24 +228,18 @@ function renderFile(fileId) {
 }
 
 editorIcon.addEventListener("click", () => {
-  openEditor();
-  if (!activeTabId) {
-    renderFile("about");
-  }
+  renderFile("index");
 });
 
 editorIcon.addEventListener("keydown", (e) => {
   if (e.key === "Enter" || e.key === " ") {
     e.preventDefault();
-    openEditor();
-    if (!activeTabId) {
-      renderFile("about");
-    }
+    renderFile("index");
   }
 });
 
 closeBtn.addEventListener("click", closeEditor);
-homeFile.addEventListener("click", closeEditor);
+homeFile.addEventListener("click", () => renderFile("index"));
 
 aboutFile.addEventListener("click", () => renderFile("about"));
 skillsFile.addEventListener("click", () => renderFile("skills"));
@@ -240,5 +252,5 @@ worksIcon.addEventListener("click", () => renderFile("works"));
 contactIcon.addEventListener("click", () => renderFile("contact"));
 
 // 初期状態
-renderFile("about");
+renderFile("index");
 closeEditor();
