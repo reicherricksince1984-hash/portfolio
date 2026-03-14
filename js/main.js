@@ -16,6 +16,9 @@ const contactIcon = document.getElementById("contactIcon");
 const tabBar = document.getElementById("tabBar");
 const codeView = document.getElementById("codeView");
 
+const tabScrollLeft = document.getElementById("tabScrollLeft");
+const tabScrollRight = document.getElementById("tabScrollRight");
+
 const fileItems = [homeFile, aboutFile, skillsFile, worksFile, contactFile];
 const activityIcons = [aboutIcon, skillsIcon, worksIcon, contactIcon];
 
@@ -63,27 +66,86 @@ const files = {
 };
 
 function openEditor() {
+  if (!editorWindow) return;
   editorWindow.classList.add("active");
   editorWindow.setAttribute("aria-hidden", "false");
 }
 
 function closeEditor() {
+  if (!editorWindow) return;
   editorWindow.classList.remove("active");
   editorWindow.setAttribute("aria-hidden", "true");
 }
 
 function clearActiveFile() {
-  fileItems.forEach((item) => item.classList.remove("active"));
+  fileItems.forEach((item) => {
+    if (item) item.classList.remove("active");
+  });
 }
 
 function clearActiveIcon() {
-  activityIcons.forEach((icon) => icon.classList.remove("active"));
+  activityIcons.forEach((icon) => {
+    if (icon) icon.classList.remove("active");
+  });
 }
 
 function clearActiveTab() {
-  document.querySelectorAll(".tab").forEach((tab) => {
+  if (!tabBar) return;
+  tabBar.querySelectorAll(".tab").forEach((tab) => {
     tab.classList.remove("active");
   });
+}
+
+function setActiveVisual(file) {
+  clearActiveFile();
+  clearActiveIcon();
+  clearActiveTab();
+
+  if (file.fileEl) {
+    file.fileEl.classList.add("active");
+  }
+
+  if (file.iconEl) {
+    file.iconEl.classList.add("active");
+  }
+
+  const tab = openTabs.get(file.id);
+  if (tab) {
+    tab.classList.add("active");
+    tab.scrollIntoView({
+      behavior: "smooth",
+      inline: "nearest",
+      block: "nearest"
+    });
+  }
+
+  activeTabId = file.id;
+  updateTabScrollButtons();
+}
+
+function updateTabScrollButtons() {
+  if (!tabBar || !tabScrollLeft || !tabScrollRight) return;
+
+  const maxScroll = Math.max(0, tabBar.scrollWidth - tabBar.clientWidth);
+  tabScrollLeft.disabled = tabBar.scrollLeft <= 1;
+  tabScrollRight.disabled = tabBar.scrollLeft >= maxScroll - 1;
+}
+
+function scrollTabs(direction = "right") {
+  if (!tabBar) return;
+
+  const amount = Math.max(120, tabBar.clientWidth * 0.6);
+  const nextLeft =
+    direction === "left"
+      ? tabBar.scrollLeft - amount
+      : tabBar.scrollLeft + amount;
+
+  tabBar.scrollTo({
+    left: nextLeft,
+    behavior: "smooth"
+  });
+
+  window.setTimeout(updateTabScrollButtons, 250);
 }
 
 function sleep(ms) {
@@ -116,29 +178,12 @@ async function typeHTMLLine(targetEl, html, speed = 12, token) {
   return true;
 }
 
-function setActiveVisual(file) {
-  clearActiveFile();
-  clearActiveIcon();
-  clearActiveTab();
-
-  if (file.fileEl) {
-    file.fileEl.classList.add("active");
-  }
-
-  if (file.iconEl) {
-    file.iconEl.classList.add("active");
-  }
-
-  const tab = openTabs.get(file.id);
-  if (tab) {
-    tab.classList.add("active");
-  }
-
-  activeTabId = file.id;
-}
-
 function createTab(file) {
-  if (openTabs.has(file.id)) return openTabs.get(file.id);
+  if (!tabBar) return null;
+
+  if (openTabs.has(file.id)) {
+    return openTabs.get(file.id);
+  }
 
   const tab = document.createElement("button");
   tab.className = "tab";
@@ -153,19 +198,24 @@ function createTab(file) {
   tabBar.appendChild(tab);
   openTabs.set(file.id, tab);
 
+  requestAnimationFrame(updateTabScrollButtons);
   return tab;
 }
 
 function renderInstant(template, file) {
   typingToken++;
+
   createTab(file);
   setActiveVisual(file);
+
+  if (!codeView) return;
 
   codeView.classList.remove("typing");
   codeView.innerHTML = template.innerHTML;
   codeView.scrollTop = 0;
 
   renderedOnce.add(file.templateId);
+  updateTabScrollButtons();
 }
 
 async function renderWithTyping(template, file) {
@@ -174,6 +224,8 @@ async function renderWithTyping(template, file) {
 
   createTab(file);
   setActiveVisual(file);
+
+  if (!codeView) return;
 
   codeView.innerHTML = "";
   codeView.classList.add("typing");
@@ -202,6 +254,7 @@ async function renderWithTyping(template, file) {
   if (currentToken === typingToken) {
     codeView.classList.remove("typing");
     renderedOnce.add(file.templateId);
+    updateTabScrollButtons();
   }
 }
 
@@ -214,7 +267,6 @@ function renderFile(fileId) {
 
   openEditor();
 
-  // index.html は常に即表示
   if (fileId === "index") {
     renderInstant(template, file);
     return;
@@ -227,30 +279,84 @@ function renderFile(fileId) {
   }
 }
 
-editorIcon.addEventListener("click", () => {
-  renderFile("index");
-});
+function bindEvents() {
+  if (editorIcon) {
+    editorIcon.addEventListener("click", () => {
+      renderFile("index");
+    });
 
-editorIcon.addEventListener("keydown", (e) => {
-  if (e.key === "Enter" || e.key === " ") {
-    e.preventDefault();
-    renderFile("index");
+    editorIcon.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        renderFile("index");
+      }
+    });
   }
-});
 
-closeBtn.addEventListener("click", closeEditor);
-homeFile.addEventListener("click", () => renderFile("index"));
+  if (closeBtn) {
+    closeBtn.addEventListener("click", closeEditor);
+  }
 
-aboutFile.addEventListener("click", () => renderFile("about"));
-skillsFile.addEventListener("click", () => renderFile("skills"));
-worksFile.addEventListener("click", () => renderFile("works"));
-contactFile.addEventListener("click", () => renderFile("contact"));
+  if (homeFile) {
+    homeFile.addEventListener("click", () => renderFile("index"));
+  }
 
-aboutIcon.addEventListener("click", () => renderFile("about"));
-skillsIcon.addEventListener("click", () => renderFile("skills"));
-worksIcon.addEventListener("click", () => renderFile("works"));
-contactIcon.addEventListener("click", () => renderFile("contact"));
+  if (aboutFile) {
+    aboutFile.addEventListener("click", () => renderFile("about"));
+  }
 
-// 初期状態
-renderFile("index");
-closeEditor();
+  if (skillsFile) {
+    skillsFile.addEventListener("click", () => renderFile("skills"));
+  }
+
+  if (worksFile) {
+    worksFile.addEventListener("click", () => renderFile("works"));
+  }
+
+  if (contactFile) {
+    contactFile.addEventListener("click", () => renderFile("contact"));
+  }
+
+  if (aboutIcon) {
+    aboutIcon.addEventListener("click", () => renderFile("about"));
+  }
+
+  if (skillsIcon) {
+    skillsIcon.addEventListener("click", () => renderFile("skills"));
+  }
+
+  if (worksIcon) {
+    worksIcon.addEventListener("click", () => renderFile("works"));
+  }
+
+  if (contactIcon) {
+    contactIcon.addEventListener("click", () => renderFile("contact"));
+  }
+
+  if (tabScrollLeft) {
+    tabScrollLeft.addEventListener("click", () => scrollTabs("left"));
+  }
+
+  if (tabScrollRight) {
+    tabScrollRight.addEventListener("click", () => scrollTabs("right"));
+  }
+
+  if (tabBar) {
+    tabBar.addEventListener("scroll", updateTabScrollButtons);
+  }
+
+  window.addEventListener("resize", updateTabScrollButtons);
+}
+
+function initialize() {
+  bindEvents();
+
+  // 初期状態では index.html の内容だけ準備して、ウィンドウは閉じる
+  renderFile("index");
+  closeEditor();
+
+  // 初期ボタン状態を整える
+  updateTabScrollButtons();
+}
+
+initialize();
