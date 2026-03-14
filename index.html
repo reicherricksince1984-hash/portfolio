@@ -65,7 +65,17 @@
         </aside>
 
         <div class="editor-area">
-          <div class="tab-bar" id="tabBar"></div>
+          <div class="tab-bar-wrap">
+            <button class="tab-scroll-btn left" id="tabScrollLeft" type="button" aria-label="左へスクロール">
+              &lt;
+            </button>
+          
+            <div class="tab-bar" id="tabBar"></div>
+          
+            <button class="tab-scroll-btn right" id="tabScrollRight" type="button" aria-label="右へスクロール">
+              &gt;
+            </button>
+          </div>
 
           <div class="code-view" id="codeView"></div>
 
